@@ -1,0 +1,97 @@
+* {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+h4 {
+    padding: 0%;
+    margin: 0%;
+}
+
+.chatroom {
+    font: 100% Courier New;
+    max-height: 95vh;
+    display: grid;
+    grid-template-columns: 20% auto;
+    border: 3px dashed #307202;
+    color: #85d44c;
+}
+
+.sidebar,
+.conversation {
+    border: 1px solid #307202;
+}
+
+.sidebar {
+    margin-right: 2px;
+}
+
+.conversation {
+    margin-left: 2px;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column-reverse;
+    min-height: 80vh;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.message {
+    display: grid;
+    grid-template-columns: 10% 85% 5%;
+    margin-bottom: 10px;
+}
+
+.user-input {
+    color: #85d44c;
+    background-color: black;
+}
+
+.user-input:focus {
+    color: #85d44c;
+    background-color: black;
+}
+
+.recents {
+    max-height: 75vh;
+    overflow-y: auto;
+    font-size: 15px;
+}
+
+.recents .room {
+    border: 1px #307202 dashed;
+    padding: 2px;
+    margin-top: 3px;
+    font-size: 12px;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #7d9e66;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #307202;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #0f2201;
+}
