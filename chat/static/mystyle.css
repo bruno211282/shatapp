@@ -17,7 +17,11 @@ h4 {
 
 .chatroom {
     font: 100% Courier New;
-    max-height: 95vh;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 8px;
+    min-height: calc(100vh - 5px - 5px);
+    max-height: calc(100vh - 5px - 5px);
     display: grid;
     grid-template-columns: 20% auto;
     border: 3px dashed #307202;
@@ -38,10 +42,10 @@ h4 {
 }
 
 .messages {
+    padding: 5px;
     display: flex;
     flex-direction: column-reverse;
-    min-height: 80vh;
-    max-height: 80vh;
+    height: calc(100vh - 10px - 16px - 4px - 38px - 16px);
     overflow-y: auto;
 }
 
@@ -51,18 +55,53 @@ h4 {
     margin-bottom: 10px;
 }
 
+.message-text {
+    overflow-wrap: break-word;
+    inline-size: 100%;
+    /* word-break: break-all; */
+    max-width: 100%;
+}
+
+#form {
+    margin: 8px 5px;
+}
+
 .user-input {
     color: #85d44c;
+    border-color: #85d44c;
     background-color: black;
+}
+
+.user-input::placeholder {
+    color: #789663;
 }
 
 .user-input:focus {
     color: #85d44c;
+    border-color: #85d44c;
     background-color: black;
 }
 
+.button-input {
+    color: #85d44c;
+    border-color: #85d44c;
+    background-color: black;
+}
+
+.button-input:focus {
+    color: #85d44c;
+    border-color: #85d44c;
+    background-color: black;
+}
+
+.button-input:hover {
+    color: black;
+    border-color: #85d44c;
+    background-color: #85d44c;
+}
+
 .recents {
-    max-height: 75vh;
+    height: calc(100vh - 10px - 16px - 5px - 125px);
     overflow-y: auto;
     font-size: 15px;
 }
@@ -72,6 +111,12 @@ h4 {
     padding: 2px;
     margin-top: 3px;
     font-size: 12px;
+}
+
+.chat-modal {
+    background-color: black;
+    border-color: #307202;
+    color: #85d44c;
 }
 
 

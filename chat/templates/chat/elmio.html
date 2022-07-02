@@ -11,41 +11,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/mystyle.css">
     <title>ShatApp!!</title>
 </head>
 
 <body class="bg-black">
-    <div class="container-xxl mt-2 p-2 chatroom">
+    <div class="container-xxl chatroom">
 
         <div class="sidebar">
-            <div class="availables p-2">
-                <ul>
-                    <li>
-                        <a href="#lobby.html">
-                            <h4>
-                                <i class="fa-solid fa-cog"></i>
-                                Configs
-                            </h4>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#lobby.html">
-                            <h4>
-                                <i class="fa-solid fa-people-group"></i>
-                                Salas
-                            </h4>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#lobby.html">
-                            <h4>
-                                <i class="fa-solid fa-person"></i>
-                                Personas
-                            </h4>
-                        </a>
-                    </li>
-                </ul>
+            <div class="d-grid gap-2 col mx-auto availables p-2">
+                <button type="button" class="btn btn-outline-secondary button-input btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#settings-modal">
+                    <i class="fas fa-tools"></i>
+                    Configs
+                </button>
+                <button type="button" class="btn btn-outline-secondary button-input btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#rooms-list-modal">
+                    <i class="fas fa-users"></i>
+                    Salas
+                </button>
+                <button type="button" class="btn btn-outline-secondary button-input btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#people-modal">
+                    <i class="fas fa-user"></i>
+                    Personas
+                </button>
             </div>
 
             <div class="recents p-2">
@@ -223,17 +213,167 @@
         </div>
 
         <div class="conversation">
-            <div id="messages" class="messages p-3">
+            <div id="messages" class="messages">
                 <!-- aqui se insertaran los mensajes-->
+
+                <div class="message">
+                    <div class="message-user">Alberto</div>
+                    <div class="message-text">${data.message} Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Molestias, ducimus alias, reiciendis illo numquam officia beatae perspiciatis aspernatur amet
+                        non itaque architecto, praesentium sequi saepe quod labore quas tempore quis facere maiores
+                        cumque? Est consectetur porro necessitatibus obcaecati quae quidem quibusdam praesentium omnis
+                        accusamus consequatur eos facere corporis repellat ratione dolorum maiores non provident
+                        laudantium doloribus, voluptatibus error! Tenetur ex suscipit fuga dolor saepe aut repudiandae
+                        soluta sit assumenda placeat culpa eveniet quasi voluptatibus consequatur quae facilis aliquam
+                        eaque, debitis earum unde minus voluptatem optio veniam! At eum officia ducimus. Quae, quo
+                        tempore veniam nesciunt error dolorem, perferendis quisquam nulla modi aspernatur provident!
+                        Suscipit magnam nesciunt, maiores non, quo labore ea a eveniet nihil reiciendis at dolore odio
+                        sit harum. Nostrum tenetur optio, id harum autem voluptates ex? Quia nemo id ullam ea, delectus
+                        dicta, eligendi illum tempora, at voluptate iste necessitatibus rerum totam. Quibusdam dolorum
+                        illo reprehenderit dolore. Maxime?</div>
+                    <div class="message-time">15:35</div>
+                </div>
 
             </div>
 
-            <form id="form" class="m-2 user-input">
-                <input type="text" autofocus name="message" class="form-control user-input" placeholder="Escriba un mensaje...">
+            <form id="form" class="user-input">
+                <input type="text" autofocus name="message" class="form-control user-input"
+                    placeholder="Escriba un mensaje..." autocomplete="off">
             </form>
 
         </div>
     </div>
+
+
+    <!-- MODAL For Settings -->
+    <div class="modal fade" id="settings-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="settingsLabel">Configuraciones</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-input">
+                        <label for="user-name" class="form-label">Nombre de Usuario</label>
+                        <select class="form-select user-input">
+                            <option selected>Seleccionar nombre de usuario</option>
+                            <option value="1">Bruno</option>
+                            <option value="2">Alvaro</option>
+                            <option value="3">Anabel</option>
+                            <option value="4">Cristina</option>
+                            <option value="5">Francisco</option>
+                        </select>
+
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn button-input btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" id="settings-accept" class="btn button-input btn-sm"
+                        data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL for Chat Rooms -->
+    <div class="modal fade" id="rooms-list-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="roomsListLabel">Salas Disponibles</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-input">
+                        <label for="for-user" class="form-label">Salas</label>
+                        <select class="form-select user-input" id="for-user">
+                            <option selected>Seleccione una sala...</option>
+                            <option value="1">Bruno</option>
+                            <option value="2">Alvaro</option>
+                            <option value="3">Anabel</option>
+                            <option value="4">Cristina</option>
+                            <option value="5">Francisco</option>
+                        </select>
+
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn button-input btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn button-input btn-sm" data-bs-target="#new-room-modal"
+                        data-bs-toggle="modal">Crear Nueva Sala</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="new-room-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="newRoomLabel">Nueva Sala</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-input needs-validation">
+                        <label for="room-name" class="form-label">Nombre de la Sala</label>
+                        <input type="text" id="room-name" name="room-name" class="form-control mb-2 user-input"
+                            placeholder="Nombre para la sala" required>
+                        <div class="invalid-feedback">
+                            Complete el nombre.
+                        </div>
+                        <label for="room-topic" class="form-label">Tema de la Sala</label>
+                        <textarea name="room-topic" id="room-topic" class="form-control mb-2 user-input" rows="3"
+                            placeholder="Descripción"></textarea>
+
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn button-input btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn button-input btn-sm">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL For People -->
+    <div class="modal fade" id="people-modal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="peopleLabel">Enviar un mensaje directo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-input">
+                        <label for="for-user" class="form-label">Mensaje para...</label>
+                        <select class="form-select user-input" id="for-user">
+                            <option selected>Enviar mensaje directo a...</option>
+                            <option value="1">Bruno</option>
+                            <option value="2">Alvaro</option>
+                            <option value="3">Anabel</option>
+                            <option value="4">Cristina</option>
+                            <option value="5">Francisco</option>
+                        </select>
+
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn button-input btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="people-accept" class="btn button-input btn-sm"
+                        data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://kit.fontawesome.com/ba1cc93e58.js" crossorigin="anonymous"></script>
     <script src="/static/funcs.js"></script>
 </body>
