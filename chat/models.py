@@ -8,6 +8,10 @@ class ChatUser(User):
     )
 
 
+class DirectChat(models.Model):
+    pass
+
+
 class ChatRoom(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
     created_by = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -26,3 +30,6 @@ class ChatMessage(models.Model):
 
     class Meta:
         ordering = ["received_at"]
+
+    def __str__(self) -> str:
+        return f"Message from {self.from_user.first_name} to room {self.room.room_name}"

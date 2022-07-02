@@ -113,13 +113,18 @@ h4 {
     font-size: 12px;
 }
 
+#pills-register-tab,
+#pills-login-tab,
 .chat-modal {
     background-color: black;
     border-color: #307202;
     color: #85d44c;
 }
 
-
+#pills-register-tab.active,
+#pills-login-tab.active {
+    background-color: #307202;
+}
 
 /* width */
 ::-webkit-scrollbar {

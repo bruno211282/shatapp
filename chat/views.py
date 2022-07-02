@@ -5,7 +5,7 @@ from rest_framework import generics
 
 
 def chatroom(request):
-    return render(request, "chat/elmio.html")
+    return render(request, "chat/app.html")
 
 
 class ChatRoomsList(generics.ListCreateAPIView):

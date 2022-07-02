@@ -1,6 +1,9 @@
-let url = `ws://${window.location.host}/ws/socket-server/`
 
-const chatSocket = new WebSocket(url)
+let room_id = '1';
+let user = 'bruno';
+let url = `ws://${window.location.host}/ws/chat/${room_id}/`;
+
+const chatSocket = new WebSocket(url);
 
 chatSocket.onmessage = function(e){
     let data = JSON.parse(e.data)
@@ -21,7 +24,8 @@ form.addEventListener('submit', (e)=> {
     e.preventDefault()
     let message = e.target.message.value
     chatSocket.send(JSON.stringify({
-        'message': message
+        'message': message,
+        'user': user
     }))
     form.reset()
 })
