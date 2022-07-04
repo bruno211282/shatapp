@@ -3,9 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class ChatUser(User):
-    rooms_im_in = models.ForeignKey(
-        to="ChatRoom", on_delete=models.CASCADE, null=True, blank=True
-    )
+    rooms_im_in = models.ManyToManyField(to="ChatRoom", blank=True)
 
 
 class DirectChat(models.Model):
