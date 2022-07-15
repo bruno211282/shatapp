@@ -13,7 +13,7 @@ class ChatUserSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatUser
-        fields = ["id", "username", "first_name"]
+        fields = ["id", "username", "first_name", "last_used_room"]
 
 
 class CreateChatUserSerializer(serializers.ModelSerializer):

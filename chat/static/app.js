@@ -34,10 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 sessionStorage.setItem('userData', JSON.stringify(data));
+
+                console.log(data)
                 token = data.token;
                 userName = data.user.first_name;
                 userId = data.user.id;
-                roomId = 1; // TODO: reemplazar por el numero de la room cuando venga posta...
+                roomId = data.user.last_used_room;
                 loginModal.hide();
                 chatRoom.dispatchEvent(connectWS);
             })
@@ -50,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     chatRoom.addEventListener('connectWS', function () {
-        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/1/`);
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`);
         chatSocket.onmessage = function (e) {
             var data = JSON.parse(e.data)
             console.log('Socket message: ', e)
@@ -86,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         token = userData.token;
         userName = userData.user.first_name;
         userId = userData.user.id;
-        roomId = 2; // TODO: reemplazar por el numero de la room cuando venga posta...
+        roomId = userData.user.last_used_room;
         chatRoom.dispatchEvent(connectWS);
     } else {
         loginModal.show()
