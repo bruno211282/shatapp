@@ -4,6 +4,16 @@ from django.contrib.auth.models import User
 # Create your models here.
 class ChatUser(User):
     rooms_im_in = models.ManyToManyField(to="ChatRoom", blank=True)
+    last_used_room = models.ForeignKey(
+        to="ChatRoom",
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        null=True,
+        related_name="last_room",
+    )
+
+    def __str__(self) -> str:
+        return self.first_name
 
 
 class DirectChat(models.Model):

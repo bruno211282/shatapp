@@ -29,10 +29,9 @@ class ChatConsumer(WebsocketConsumer):
         message = text_json["message"]
         received_at = datetime.datetime.now()
 
-        print(text_json)
-
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
+            # Esto dispara un "evento" que luego "llama" un metodo del mismo nombre...
             {"type": "chat_message"},
         )
 
@@ -44,7 +43,8 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         message = self.msg_to_db.text
         user = self.msg_to_db.from_user.first_name
-        time = f"{self.msg_to_db.received_at.hour}:{self.msg_to_db.received_at.minute}"
+
+        time = self.msg_to_db.received_at.strftime("%H:%M")
 
         self.send(
             text_data=json.dumps(

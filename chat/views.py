@@ -1,24 +1,21 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from knox.models import AuthToken
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from chat.models import ChatRoom, ChatUser
+from chat.models import ChatRoom, ChatUser, ChatMessage
 from chat.serializers import (
     ChatRoomSerializer,
     ChatUserSerializer,
+    ChatMessageSerializer,
     CreateChatUserSerializer,
     LoginChatUserSerializer,
+    UserSerializer,
 )
 
 
-def login(request):
-    return render(request, "chat/login.html")
-
-
-@login_required(login_url="/login")
 def chatroom(request):
     return render(request, "chat/app.html")
 
@@ -26,13 +23,22 @@ def chatroom(request):
 class ChatRoomsList(generics.ListCreateAPIView):
     queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
+
+
+class ChatMessageList(generics.ListAPIView):
+    def get_queryset(self):
+        self.room = get_object_or_404(ChatRoom, pk=self.kwargs["room"])
+        return ChatMessage.objects.filter(room=self.room)
+
+    serializer_class = ChatMessageSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ChatRoomDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
@@ -42,13 +48,13 @@ class ChatRoomDetail(generics.RetrieveUpdateDestroyAPIView):
 class ListChatUsers(generics.ListAPIView):
     queryset = ChatUser.objects.all()
     serializer_class = ChatUserSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 
 class ChatUserDetail(generics.RetrieveAPIView):
     queryset = ChatUser.objects.all()
     serializer_class = ChatUserSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 
 class CreateChatUser(generics.CreateAPIView):
@@ -76,10 +82,10 @@ class LoginChatUser(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = serializer.validate_data
+        user = serializer.validated_data
         return Response(
             {
-                "user": ChatUserSerializer(
+                "user": UserSerializer(
                     user, context=self.get_serializer_context()
                 ).data,
                 "token": AuthToken.objects.create(user)[1],

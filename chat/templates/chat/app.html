@@ -11,18 +11,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/mystyle.css">
+    <script src="/static/app.js"></script>
     <title>ShatApp!!</title>
 </head>
 
 <body class="bg-black">
-    <div class="container-xxl chatroom">
+    <div id="chatroom" class="container-xxl chatroom">
 
         <div class="sidebar">
             <div class="d-grid gap-2 col mx-auto availables p-2">
                 <button type="button" class="btn btn-outline-secondary button-input btn-sm" data-bs-toggle="modal"
                     data-bs-target="#settings-modal">
+
                     <i class="fas fa-tools"></i>
                     Perfil
                 </button>
@@ -54,160 +55,6 @@
                             <i class="fa fa-times" style="float: right;"></i>
                         </a>
                     </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room active">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los TutiFrutti</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room active">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los TutiFrutti</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Development</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Pandemials</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>Marketing</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room active">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los TutiFrutti</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Development</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Pandemials</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>Marketing</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room active">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los TutiFrutti</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Development</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Pandemials</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-user"></i>
-                            <span>Marketing</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room active">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los TutiFrutti</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Murcielagos</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Development</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
-                    <li class="room">
-                        <a href="#">
-                            <i class="fa fa-rocket"></i>
-                            <span>Los Pandemials</span>
-                            <i class="fa fa-times" style="float: right;"></i>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -216,7 +63,7 @@
             <div id="messages" class="messages">
                 <!-- aqui se insertaran los mensajes-->
 
-                {% comment %} <div class="message">
+                <!-- <div class="message">
                     <div class="message-user">Alberto</div>
                     <div class="message-text">${data.message} Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Molestias, ducimus alias, reiciendis illo numquam officia beatae perspiciatis aspernatur amet
@@ -232,11 +79,11 @@
                         dicta, eligendi illum tempora, at voluptate iste necessitatibus rerum totam. Quibusdam dolorum
                         illo reprehenderit dolore. Maxime?</div>
                     <div class="message-time">15:35</div>
-                </div> {% endcomment %}
+                </div> -->
 
             </div>
 
-            <form id="form" class="user-input">
+            <form id="chat-box" class="user-input">
                 <input type="text" autofocus name="message" class="form-control user-input"
                     placeholder="Escriba un mensaje..." autocomplete="off">
             </form>
@@ -289,8 +136,8 @@
                 </div>
                 <div class="modal-body">
                     <form class="user-input">
-                        <label for="for-user" class="form-label">Salas</label>
-                        <select class="form-select user-input" id="for-user">
+                        <label for="for-room" class="form-label">Salas</label>
+                        <select class="form-select user-input" id="for-room">
                             <option selected>Seleccione una sala...</option>
                             <option value="1">Bruno</option>
                             <option value="2">Alvaro</option>
@@ -374,8 +221,85 @@
     </div>
 
 
+    <!-- MODALS For LOGIN / REGISTRATION -->
+    <div class="modal fade" id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">Ingresar</h5>
+                    <button type="button" class="btn button-input btn-sm" data-bs-target="#new-user-modal"
+                        data-bs-toggle="modal">Registrar
+                        Nuevo Usuario</button>
+                </div>
+                <div class="modal-body">
+                    <form class="user-input">
+                        <form id="login-form" class="user-input">
+                            <div class="mb-3">
+                                <label for="loginusername" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control user-input" id="loginusername">
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginpassword" class="form-label">Password</label>
+                                <input type="password" class="form-control user-input" id="loginpassword">
+                            </div>
+                            <div class="mb-3 form-check">
+                                <label class="form-check-label" for="loginkeepsession">Mantener sesión iniciada</label>
+                                <input type="checkbox" class="form-check-input" id="loginkeepsession" checked>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button id="login-btn" type="button"
+                                    class="btn btn-primary button-input">Ingresar</button>
+                            </div>
+                        </form>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="new-user-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content chat-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="newRoomLabel">Nuevo Usuario</h5>
+                    <button type="button" class="btn button-input btn-sm" data-bs-target="#login-modal"
+                        data-bs-toggle="modal">Ya tengo
+                        usuario</button>
+                </div>
+                <div class="modal-body">
+                    <form id="register-form" class="user-input">
+                        <div class="mb-3">
+                            <label for="registername" class="form-label">Nombre de Usuario</label>
+                            <input type="text" class="form-control user-input" id="registername">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registeremail" class="form-label">Email</label>
+                            <input type="email" class="form-control user-input" id="registeremail">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerpass" class="form-label">Clave</label>
+                            <input type="password" class="form-control user-input" id="registerpass">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerpassconf" class="form-label">Confirma la clave</label>
+                            <input type="password" class="form-control user-input" id="registerpassconf">
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button id="register-btn" type="button"
+                                class="btn btn-primary button-input">Registrar</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://kit.fontawesome.com/ba1cc93e58.js" crossorigin="anonymous"></script>
-    <script src="/static/funcs.js"></script>
 </body>
 
 </html>

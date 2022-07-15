@@ -51,7 +51,7 @@ h4 {
 
 .message {
     display: grid;
-    grid-template-columns: 10% 85% 5%;
+    grid-template-columns: 10% 83% 7%;
     margin-bottom: 10px;
 }
 
@@ -62,7 +62,7 @@ h4 {
     max-width: 100%;
 }
 
-#form {
+#chat-box {
     margin: 8px 5px;
 }
 
@@ -113,6 +113,15 @@ h4 {
     font-size: 12px;
 }
 
+#login-box {
+    min-height: 500px;
+    border: 2px #307202 dashed;
+    border-radius: 10px;
+    padding: 25px;
+    width: 300px;
+}
+
+
 #pills-register-tab,
 #pills-login-tab,
 .chat-modal {
@@ -126,22 +135,25 @@ h4 {
     background-color: #307202;
 }
 
-/* width */
-::-webkit-scrollbar {
-    width: 10px;
+.background-container {
+    -webkit-filter: blur(4px);
+    -moz-filter: blur(4px);
+    -o-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #7d9e66;
+/* Hide scrollbar for Chrome, Safari and Opera */
+.messages::-webkit-scrollbar,
+.recents::-webkit-scrollbar {
+    display: none;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #307202;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #0f2201;
+/* Hide scrollbar for IE, Edge and Firefox */
+.messages,
+.recents {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
