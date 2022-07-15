@@ -73,23 +73,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    if (!userIsLoggedIn) {
+    // Muestro el login???
+    let userData = JSON.parse(sessionStorage.getItem('userData'))
+    if (userData) {
+        console.log(userData);
+    } else {
         loginModal.show()
     }
 
 
 
 
-
-    // // Login functionalities...
-    // let userData = JSON.parse(sessionStorage.getItem('userData'))
-
-
-    // function loginUser() {
-
-    //
-
-    // }
 
     // function populateChat(room) {
     //     let messages = document.getElementById('messages');
