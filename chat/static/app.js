@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let userName = "";
     let userId = "";
     let roomId = "";
+    let roomsImIn = "";
 
     const connectWS = new Event('connectWS');
     const chatRoom = document.getElementById('chatroom');
@@ -40,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 userName = data.user.first_name;
                 userId = data.user.id;
                 roomId = data.user.last_used_room.id;
+                roomsImIn = data.user.rooms_im_in;
+                populateRecents(roomsImIn);
                 populateChat(roomId);
                 loginModal.hide();
                 chatRoom.dispatchEvent(connectWS);
@@ -90,6 +93,8 @@ document.addEventListener("DOMContentLoaded", function () {
         userName = userData.user.first_name;
         userId = userData.user.id;
         roomId = userData.user.last_used_room.id;
+        roomsImIn = userData.user.rooms_im_in;
+        populateRecents(roomsImIn);
         populateChat(roomId);
         chatRoom.dispatchEvent(connectWS);
     } else {
@@ -124,6 +129,22 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.log(`Error reading messages: ${err}`)
             });
+    }
+
+    function populateRecents(recentRooms) {
+        let recents = document.getElementById('recents-ul');
+
+        recentRooms.forEach(room => {
+            recents.insertAdjacentHTML('afterbegin',
+                `<li class="room">
+                    <a href="#" id="r-room-${room.id}">
+                        <i class="fa fa-users"></i>
+                        <span>${room.room_name}</span>
+                        <i class="fa fa-times" style="float: right;"></i>
+                    </a>
+                </li>`)
+        })
+
     }
 
 

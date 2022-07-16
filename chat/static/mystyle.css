@@ -113,6 +113,13 @@ h4 {
     font-size: 12px;
 }
 
+.recents .room a:hover,
+.recents .room .active,
+.recents .room:hover {
+    background-color: #85d44c;
+    color: black;
+}
+
 #login-box {
     min-height: 500px;
     border: 2px #307202 dashed;
