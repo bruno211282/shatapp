@@ -27,24 +27,27 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_json = json.loads(text_data)
         message = text_json["message"]
-        received_at = datetime.datetime.now()
+
+        msg_to_db = ChatMessage(
+            text=message, from_user=self.scope["user"], room=self.room
+        )
+        msg_to_db.save()
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             # Esto dispara un "evento" que luego "llama" un metodo del mismo nombre...
-            {"type": "chat_message"},
+            {
+                "type": "chat.message",
+                "message": message,
+                "user": self.scope["user"],
+                "time": msg_to_db.received_at.strftime("%H:%M"),
+            },
         )
-
-        self.msg_to_db = ChatMessage(
-            text=message, from_user=self.scope["user"], room=self.room
-        )
-        self.msg_to_db.save()
 
     def chat_message(self, event):
-        message = self.msg_to_db.text
-        user = self.msg_to_db.from_user.first_name
-
-        time = self.msg_to_db.received_at.strftime("%H:%M")
+        message = event["message"]
+        user = event["user"].first_name
+        time = event["time"]
 
         self.send(
             text_data=json.dumps(
