@@ -15,6 +15,7 @@ h4 {
     margin: 0%;
 }
 
+
 .chatroom {
     font: 100% Courier New;
     margin-top: 5px;
@@ -66,32 +67,34 @@ h4 {
     margin: 8px 5px;
 }
 
-.user-input {
-    color: #85d44c;
-    border-color: #85d44c;
-    background-color: black;
+::-moz-selection {
+    /* Code for Firefox */
+    color: black;
+    background: #85d44c;
+}
+
+::selection {
+    color: black;
+    background: #85d44c;
 }
 
 .user-input::placeholder {
     color: #789663;
 }
 
+.button-input,
+.button-input:focus,
+.user-input,
+.user-input:disabled,
 .user-input:focus {
     color: #85d44c;
     border-color: #85d44c;
     background-color: black;
 }
 
-.button-input {
-    color: #85d44c;
-    border-color: #85d44c;
-    background-color: black;
-}
-
-.button-input:focus {
-    color: #85d44c;
-    border-color: #85d44c;
-    background-color: black;
+.user-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(133, 212, 76, 1);
 }
 
 .button-input:hover {
@@ -120,26 +123,10 @@ h4 {
     color: black;
 }
 
-#login-box {
-    min-height: 500px;
-    border: 2px #307202 dashed;
-    border-radius: 10px;
-    padding: 25px;
-    width: 300px;
-}
-
-
-#pills-register-tab,
-#pills-login-tab,
 .chat-modal {
     background-color: black;
     border-color: #307202;
     color: #85d44c;
-}
-
-#pills-register-tab.active,
-#pills-login-tab.active {
-    background-color: #307202;
 }
 
 .background-container {
