@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 userName = data.user.first_name;
                 userId = data.user.id;
                 roomId = data.user.last_used_room.id;
+                populateChat(roomId);
                 loginModal.hide();
                 chatRoom.dispatchEvent(connectWS);
             })
@@ -89,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userName = userData.user.first_name;
         userId = userData.user.id;
         roomId = userData.user.last_used_room.id;
+        populateChat(roomId);
         chatRoom.dispatchEvent(connectWS);
     } else {
         loginModal.show()
@@ -96,42 +98,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+    function populateChat(room) {
+        let messages = document.getElementById('messages');
 
-
-    // function populateChat(room) {
-    //     let messages = document.getElementById('messages');
-
-    //     let url = `http://${window.location.host}/rooms/${room}/messages`;
-    //     let req = new Request(url, {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Authorization': `Token ${token}`
-    //         },
-    //         method: "GET"
-    //     });
-    //     fetch(req)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             data.forEach(data => {
-    //                 messages.insertAdjacentHTML('afterbegin',
-    //                     `<div class="message">
-    //                         <div class="message-user">${data.from_user}</div>
-    //                         <div class="message-text">${data.text}</div>
-    //                         <div class="message-time">${data.received_at}</div>
-    //                     </div>`)
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(`Error reading messages: ${err}`)
-    //         });
-    // }
-
-    // function setupChatApp() {
-    //     // Setup Websocket...
-
-
-    //     populateChat(roomId);
-    // }
+        let url = `http://${window.location.host}/rooms/${room}/messages`;
+        let req = new Request(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            method: "GET"
+        });
+        fetch(req)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(data => {
+                    messages.insertAdjacentHTML('afterbegin',
+                        `<div class="message">
+                            <div class="message-user">${data.from_user}</div>
+                            <div class="message-text">${data.text}</div>
+                            <div class="message-time">${data.received_at}</div>
+                        </div>`)
+                })
+            })
+            .catch(err => {
+                console.log(`Error reading messages: ${err}`)
+            });
+    }
 
 
 });
