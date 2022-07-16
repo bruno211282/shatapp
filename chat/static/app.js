@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 token = data.token;
                 userName = data.user.first_name;
                 userId = data.user.id;
-                roomId = data.user.last_used_room;
+                roomId = data.user.last_used_room.id;
                 loginModal.hide();
                 chatRoom.dispatchEvent(connectWS);
             })
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         token = userData.token;
         userName = userData.user.first_name;
         userId = userData.user.id;
-        roomId = userData.user.last_used_room;
+        roomId = userData.user.last_used_room.id;
         chatRoom.dispatchEvent(connectWS);
     } else {
         loginModal.show()

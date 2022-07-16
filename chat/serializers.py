@@ -4,16 +4,27 @@ from chat.models import ChatUser, ChatRoom, ChatMessage
 from django.contrib.auth import authenticate, login
 
 
+class ChatRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = "__all__"
+
+
 class ChatUserSerializer(serializers.ModelSerializer):
+    rooms_im_in = ChatRoomSerializer(many=True, read_only=True)
+    last_used_room = ChatRoomSerializer()
+
     class Meta:
         model = ChatUser
-        fields = ["id", "username", "first_name", "last_name", "email", "rooms_im_in"]
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatUser
-        fields = ["id", "username", "first_name", "last_used_room"]
+        fields = [
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "rooms_im_in",
+            "last_used_room",
+        ]
 
 
 class CreateChatUserSerializer(serializers.ModelSerializer):
@@ -47,12 +58,6 @@ class LoginChatUserSerializer(serializers.Serializer):
             return user
 
         raise serializers.ValidationError("Incorrect Credentials!")
-
-
-class ChatRoomSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatRoom
-        fields = "__all__"
 
 
 class TimeListingField(serializers.DateTimeField):

@@ -12,7 +12,6 @@ from chat.serializers import (
     ChatMessageSerializer,
     CreateChatUserSerializer,
     LoginChatUserSerializer,
-    UserSerializer,
 )
 
 
@@ -85,7 +84,7 @@ class LoginChatUser(generics.GenericAPIView):
         user = serializer.validated_data
         return Response(
             {
-                "user": UserSerializer(
+                "user": ChatUserSerializer(
                     user, context=self.get_serializer_context()
                 ).data,
                 "token": AuthToken.objects.create(user)[1],
