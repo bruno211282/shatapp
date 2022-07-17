@@ -27,6 +27,12 @@ class ChatUserSerializer(serializers.ModelSerializer):
         ]
 
 
+class ChatUserUpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatUser
+        fields = ["id", "first_name", "last_name", "email"]
+
+
 class CreateChatUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatUser

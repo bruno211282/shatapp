@@ -84,28 +84,38 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content chat-modal">
                 <div class="modal-header border-0">
-                    <h5 class="modal-title" id="settingsLabel">Configuraciones</h5>
+                    <h5 class="modal-title" id="settingsLabel">Perfil del usuario</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="user-input">
-                        <label for="user-name" class="form-label">Nombre de Usuario</label>
-                        <select class="form-select user-input">
-                            <option selected>Seleccionar nombre de usuario</option>
-                            <option value="1">Bruno</option>
-                            <option value="2">Alvaro</option>
-                            <option value="3">Anabel</option>
-                            <option value="4">Cristina</option>
-                            <option value="5">Francisco</option>
-                        </select>
-
+                    <form id="profile-form" class="user-input">
+                        <div class="mb-2">
+                            <label for="profile-first" class="form-label">Nombre</label>
+                            <input type="text" class="form-control user-input" id="profile-first">
+                        </div>
+                        <div class="mb-2">
+                            <label for="profile-last" class="form-label">Apellido</label>
+                            <input type="text" class="form-control user-input" id="profile-last">
+                        </div>
+                        <div class="mb-2">
+                            <label for="profile-email" class="form-label">Email</label>
+                            <input type="email" class="form-control user-input" id="profile-email">
+                        </div>
+                        <div class="mb-2">
+                            <label for="profile-pass" class="form-label">Clave</label>
+                            <input type="password" class="form-control user-input" id="profile-pass" disabled>
+                        </div>
+                        <div class="mb-2">
+                            <label for="profile-passconf" class="form-label">Confirma la clave</label>
+                            <input type="password" class="form-control user-input" id="profile-passconf" disabled>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn button-input btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" id="settings-accept" class="btn button-input btn-sm"
-                        data-bs-dismiss="modal">Aceptar</button>
+                    <button form="profile-form" type="submit" id="settings-accept" class="btn button-input btn-sm"
+                        data-bs-dismiss="modal">Guardar</button>
                 </div>
             </div>
         </div>
@@ -221,15 +231,15 @@
                 <div class="modal-body">
                     <form class="user-input">
                         <form id="login-form" class="user-input">
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="loginusername" class="form-label">Nombre de Usuario</label>
                                 <input type="text" class="form-control user-input" id="loginusername">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="loginpassword" class="form-label">Password</label>
                                 <input type="password" class="form-control user-input" id="loginpassword">
                             </div>
-                            <div class="mb-3 form-check">
+                            <div class="mb-2 form-check">
                                 <label class="form-check-label" for="loginkeepsession">Mantener sesión iniciada</label>
                                 <input type="checkbox" class="form-check-input" id="loginkeepsession" checked>
                             </div>
@@ -257,19 +267,19 @@
                 </div>
                 <div class="modal-body">
                     <form id="register-form" class="user-input">
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="registername" class="form-label">Nombre de Usuario</label>
                             <input type="text" class="form-control user-input" id="registername">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="registeremail" class="form-label">Email</label>
                             <input type="email" class="form-control user-input" id="registeremail">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="registerpass" class="form-label">Clave</label>
                             <input type="password" class="form-control user-input" id="registerpass">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="registerpassconf" class="form-label">Confirma la clave</label>
                             <input type="password" class="form-control user-input" id="registerpassconf">
                         </div>

@@ -11,6 +11,7 @@ from chat.serializers import (
     ChatUserSerializer,
     ChatMessageSerializer,
     CreateChatUserSerializer,
+    ChatUserUpdateProfileSerializer,
     LoginChatUserSerializer,
 )
 
@@ -50,9 +51,15 @@ class ListChatUsers(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
 
-class ChatUserDetail(generics.RetrieveAPIView):
+class ChatUserDetail(generics.RetrieveUpdateAPIView):
     queryset = ChatUser.objects.all()
     serializer_class = ChatUserSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ChatUserUpdateProfile(generics.UpdateAPIView):
+    queryset = ChatUser.objects.all()
+    serializer_class = ChatUserUpdateProfileSerializer
     permission_classes = [IsAuthenticated]
 
 

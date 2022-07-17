@@ -147,5 +147,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+    const profileForm = document.getElementById("profile-form");
+    const profileFirstName = document.getElementById("profile-first");
+    const profileLastName = document.getElementById("profile-last");
+    const profileEMail = document.getElementById("profile-email");
+    profileForm.addEventListener('submit', function (e) {
+        e.preventDefault()
+        let firstName = profileFirstName.value
+        console.log(firstName);
+        let lastName = profileLastName.value
+        console.log(lastName);
+        let email = profileEMail.value
+        console.log(email);
+
+        let url = `http://${window.location.host}/users/profile/${userId}`;
+        let req = new Request(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            method: "PUT",
+            body: `{
+                "id": ${userId},
+                "first_name": "${firstName}",
+                "last_name": "${lastName}",
+                "email": "${email}"
+            }`
+        });
+        fetch(req)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    });
 
 });
