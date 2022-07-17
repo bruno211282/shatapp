@@ -78,8 +78,8 @@ document.addEventListener("DOMContentLoaded", function () {
             var message = e.target.message.value
             chatSocket.send(JSON.stringify({
                 'message': message,
-                'user': userName,
-                'room': roomId
+                'type': "chat",
+                "subtype": null
             }))
             chatBox.reset()
         });
@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                userName = data.first_name
             })
             .catch(err => {
                 console.log(err);
