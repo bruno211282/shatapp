@@ -1,4 +1,3 @@
-from email import message
 import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
@@ -39,7 +38,7 @@ class ChatConsumer(WebsocketConsumer):
                 # Esto dispara un "evento" que luego "llama" un metodo del mismo nombre...
                 {
                     "type": "chat.message",
-                    "message": message,
+                    "message": data["message"],
                     "user": self.scope["user"],
                     "time": msg_to_db.received_at.strftime("%H:%M"),
                 },
