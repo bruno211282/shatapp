@@ -1,4 +1,6 @@
+// Recien cuando se cargue todo el HTML comienzo a ejecutar...
 document.addEventListener("DOMContentLoaded", function () {
+    let chatSocket;
     let token = "";
     let userName = "";
     let userId = "";
@@ -54,9 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
-
     chatRoom.addEventListener('connectWS', function () {
-        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`);
+        if (chatSocket != null) {
+            console.log("Closing WS Connection...")
+            chatSocket.close()
+        }
+        chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`);
         chatSocket.onmessage = function (e) {
             var data = JSON.parse(e.data)
             console.log('Socket message: ', e)
@@ -101,10 +106,9 @@ document.addEventListener("DOMContentLoaded", function () {
         loginModal.show()
     }
 
-
-
     function populateChat(room) {
         let messages = document.getElementById('messages');
+        messages.innerHTML = "";
 
         let url = `http://${window.location.host}/rooms/${room}/messages`;
         let req = new Request(url, {
@@ -185,4 +189,68 @@ document.addEventListener("DOMContentLoaded", function () {
             })
     });
 
+    const roomsModal = new bootstrap.Modal('#rooms-list-modal');
+    const roomsGetListBtn = document.getElementById("room-list-btn");
+    const roomsSelectWidget = document.getElementById("for-room");
+
+    roomsGetListBtn.addEventListener("click", function () {
+        let url = `http://${window.location.host}/rooms`;
+        let req = new Request(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            method: "GET"
+        });
+        fetch(req)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                roomsSelectWidget.innerHTML = "";
+                roomsSelectWidget.insertAdjacentHTML("beforeend", "<option selected>Seleccione una sala...</option>")
+
+                for (const room of data) {
+                    roomsSelectWidget.insertAdjacentHTML("beforeend", `<option value="${room.id}">${room.room_name}</option>`)
+                }
+                roomsModal.show()
+            })
+            .catch(err => {
+                console.log(`Error reading rooms: ${err}`)
+            });
+    });
+
+    roomsSelectWidget.addEventListener("change", function (e) {
+        console.log(e.target.value);
+        roomId = e.target.value;
+        populateChat(roomId);
+        chatRoom.dispatchEvent(connectWS);
+        updateUserRoom();
+        roomsModal.hide()
+    });
+
+
+    function updateUserRoom() {
+
+        let url = `http://${window.location.host}/users/${userId}/rooms`;
+        let req = new Request(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            method: "PUT",
+            body: `{
+                "last_used_room": "${roomId}"
+            }`
+        });
+        fetch(req)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                userData.user.last_used_room.id = roomId;
+                sessionStorage.setItem('userData', JSON.stringify(userData));
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
 });
