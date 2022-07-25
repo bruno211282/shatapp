@@ -9,6 +9,7 @@ from chat.models import ChatRoom, ChatUser, ChatMessage
 from chat.serializers import (
     ChatRoomSerializer,
     ChatUserSerializer,
+    ChatUserUpdateRoomsSerializer,
     ChatMessageSerializer,
     CreateChatUserSerializer,
     ChatUserUpdateProfileSerializer,
@@ -60,6 +61,12 @@ class ChatUserDetail(generics.RetrieveUpdateAPIView):
 class ChatUserUpdateProfile(generics.UpdateAPIView):
     queryset = ChatUser.objects.all()
     serializer_class = ChatUserUpdateProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ChatUserUpdateRooms(generics.UpdateAPIView):
+    queryset = ChatUser.objects.all()
+    serializer_class = ChatUserUpdateRoomsSerializer
     permission_classes = [IsAuthenticated]
 
 

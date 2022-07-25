@@ -33,6 +33,17 @@ class ChatUserUpdateProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name", "email"]
 
 
+class ChatUserUpdateRoomsSerializer(serializers.Serializer):
+    last_used_room = serializers.PrimaryKeyRelatedField(queryset=ChatRoom.objects.all())
+
+    def update(self, instance: ChatUser, validated_data: dict):
+        last_used_room_model = validated_data["last_used_room"]
+        instance.last_used_room = last_used_room_model
+        instance.rooms_im_in.add(last_used_room_model)
+        instance.save()
+        return instance
+
+
 class CreateChatUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatUser
