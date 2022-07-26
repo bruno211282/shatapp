@@ -156,17 +156,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    const profileForm = document.getElementById("profile-form");
-    const profileFirstName = document.getElementById("profile-first");
-    const profileLastName = document.getElementById("profile-last");
-    const profileEMail = document.getElementById("profile-email");
-    profileForm.addEventListener('submit', function (e) {
+    function updateUserProfile(e) {
         e.preventDefault()
-        let firstName = profileFirstName.value
+        let firstName = document.getElementById("profile-first").value;
         console.log(firstName);
-        let lastName = profileLastName.value
+        let lastName = document.getElementById("profile-last").value;
         console.log(lastName);
-        let email = profileEMail.value
+        let email = document.getElementById("profile-email").value;
         console.log(email);
 
         let url = `http://${window.location.host}/users/profile/${userId}`;
@@ -192,7 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.log(err);
             })
-    });
+    }
+
+    const profileForm = document.getElementById("profile-form");
+    profileForm.addEventListener('submit', updateUserProfile);
 
     const roomsModal = new bootstrap.Modal('#rooms-list-modal');
     const roomsGetListBtn = document.getElementById("room-list-btn");
