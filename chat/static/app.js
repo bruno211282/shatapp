@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("login-btn");
 
 
-    loginButton.addEventListener("click", function (e) {
+    function performLogin(e) {
         console.log(e)
         let loginurl = `http://${window.location.host}/auth/login`
         let username = document.getElementById("loginusername").value
@@ -53,13 +53,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(`Error with the login: ${err}`)
                 loginModal.show()
             });
-    })
+    }
 
+    loginButton.addEventListener("click", performLogin)
 
-    chatRoom.addEventListener('connectWS', function () {
+    function connectWebsocket() {
         if (chatSocket != null) {
             console.log("Closing WS Connection...")
-            chatSocket.close()
+            chatSocket.close(4000, 'Changing Room...')
         }
         chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`);
         chatSocket.onmessage = function (e) {
@@ -75,21 +76,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>`)
             }
         };
+    }
 
-        // Setup the chatbox form
-        var chatBox = document.getElementById('chat-box');
-        chatBox.addEventListener('submit', function (e) {
-            e.preventDefault()
-            var message = e.target.message.value
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'type': "chat",
-                "subtype": null
-            }))
-            chatBox.reset()
-        });
-    });
+    chatRoom.addEventListener('connectWS', connectWebsocket);
 
+
+    function submitMessage(e) {
+        e.preventDefault()
+        var message = e.target.message.value
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'type': "chat",
+            "subtype": null
+        }))
+        chatBox.reset()
+    }
+
+    // Setup the chatbox form
+    var chatBox = document.getElementById('chat-box');
+    chatBox.addEventListener('submit', submitMessage);
 
     // Muestro el login???
     let userData = JSON.parse(sessionStorage.getItem('userData'))
