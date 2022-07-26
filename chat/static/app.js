@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatRoom = document.getElementById('chatroom');
     const loginModal = new bootstrap.Modal('#login-modal');
     const loginButton = document.getElementById("login-btn");
-
+    const roomsModal = new bootstrap.Modal('#rooms-list-modal');
 
     function performLogin(e) {
         console.log(e)
@@ -193,11 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const profileForm = document.getElementById("profile-form");
     profileForm.addEventListener('submit', updateUserProfile);
 
-    const roomsModal = new bootstrap.Modal('#rooms-list-modal');
-    const roomsGetListBtn = document.getElementById("room-list-btn");
-    const roomsSelectWidget = document.getElementById("for-room");
-
-    roomsGetListBtn.addEventListener("click", function () {
+    function getAvailableRooms() {
         let url = `http://${window.location.host}/rooms`;
         let req = new Request(url, {
             headers: {
@@ -210,6 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                const roomsSelectWidget = document.getElementById("for-room");
                 roomsSelectWidget.innerHTML = "";
                 roomsSelectWidget.insertAdjacentHTML("beforeend", "<option selected>Seleccione una sala...</option>")
 
@@ -221,17 +218,21 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => {
                 console.log(`Error reading rooms: ${err}`)
             });
-    });
+    }
 
-    roomsSelectWidget.addEventListener("change", function (e) {
-        console.log(e.target.value);
+    const roomsGetListBtn = document.getElementById("room-list-btn");
+    roomsGetListBtn.addEventListener("click", getAvailableRooms);
+
+    function changeActiveRoom(e) {
         roomId = e.target.value;
         populateChat(roomId);
         chatRoom.dispatchEvent(connectWS);
         updateUserRoom();
         roomsModal.hide()
-    });
+    }
 
+    const roomsSelectWidget = document.getElementById("for-room");
+    roomsSelectWidget.addEventListener("change", changeActiveRoom);
 
     function updateUserRoom() {
 
