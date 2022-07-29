@@ -1,9 +1,6 @@
 // Recien cuando se cargue todo el HTML comienzo a ejecutar...
 document.addEventListener("DOMContentLoaded", function () {
     // App State holder....
-
-    // TODO: define properties setters to be
-    // able to fire events or exec functions at changes...
     let state = {
         chatSocket: null,
         userData: null,
@@ -154,8 +151,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 console.log("Returned data is: " + data);
                 console.log("state.userData is: " + state.userData);
-                // TODO: Update state.userData with new info
-                // TODO: Update stored data (if it was stored... :wink:)
+                // TODO: #14 Update state.userData with new info
+                // TODO: #14 Update stored data (if it was stored... :wink:)
             })
             .catch(err => {
                 console.log(err);
@@ -191,9 +188,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function changeActiveRoom(e) {
         state.userData.user.last_used_room.id = e.target.value;
-        // TODO: Update the "rooms im in" data for the user...
-        // TODO: Save the userData info in session storage (if previously saved...)
-        // TODO: Highlight the slected room in the recents...
+        // TODO: #15 Update the "rooms_im_in" data for the user
+        // TODO: #15 Save the userData info in session storage (if previously saved...)
+        // TODO: #6 Highlight the slected room in the recents...
         renderChatOldMsgs();
         renderRecents();
         chatRoom.dispatchEvent(connectWS);
