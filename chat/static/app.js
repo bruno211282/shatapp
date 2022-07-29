@@ -6,7 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // able to fire events or exec functions at changes...
     let state = {
         chatSocket: null,
-        userData: null
+        userData: null,
+        storeSession: null
     };
 
     // ===================================================
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (keepSessionStored === 'on') {
                     sessionStorage.setItem('userData', JSON.stringify(data));
+                    state.storeSession = true;
                 }
 
                 state.userData = data;
@@ -224,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ================================================================
     // Assign Events to its corresponding Actions:
 
-    // Modalsss
+    // Bootstrap Modals
     const loginModal = new bootstrap.Modal('#login-modal');
     const roomsModal = new bootstrap.Modal('#rooms-list-modal');
 
