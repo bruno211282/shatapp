@@ -1,32 +1,29 @@
 // Recien cuando se cargue todo el HTML comienzo a ejecutar...
 document.addEventListener("DOMContentLoaded", function () {
-    let chatSocket;
-    let token = "";
-    let userName = "";
-    let userId = "";
-    let roomId = "";
-    let roomsImIn = "";
+    // App State holder....
 
-    const connectWS = new Event('connectWS');
-    const chatRoom = document.getElementById('chatroom');
-    const loginModal = new bootstrap.Modal('#login-modal');
-    const loginButton = document.getElementById("login-btn");
-    const roomsModal = new bootstrap.Modal('#rooms-list-modal');
+    // TODO: define properties setters to be
+    // able to fire events or exec functions at changes...
+    let state = {
+        chatSocket: null,
+        userData: null,
+        storeSession: null
+    };
 
-    function performLogin(e) {
-        console.log(e)
+    // ===================================================
+    // Handlers Definitions....
+    function performLogin() {
         let loginurl = `http://${window.location.host}/auth/login`
-        let username = document.getElementById("loginusername").value
-        let password = document.getElementById("loginpassword").value
-        let keepsession = document.getElementById("loginkeepsession").value
-        console.log("Session should be saved: " + keepsession)
+        let userNameValue = document.getElementById("loginusername").value
+        let passwordValue = document.getElementById("loginpassword").value
+        let keepSessionStored = document.getElementById("loginkeepsession").value
 
         let req = new Request(loginurl, {
             headers: {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: `{"username": "${username}","password": "${password}"}`
+            body: `{"username": "${userNameValue}","password": "${passwordValue}"}`
         });
         fetch(req)
             .then(response => {
@@ -36,16 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json()
             })
             .then(data => {
-                sessionStorage.setItem('userData', JSON.stringify(data));
 
-                console.log(data)
-                token = data.token;
-                userName = data.user.first_name;
-                userId = data.user.id;
-                roomId = data.user.last_used_room.id;
-                roomsImIn = data.user.rooms_im_in;
-                populateRecents(roomsImIn);
-                populateChat(roomId);
+                if (keepSessionStored === 'on') {
+                    sessionStorage.setItem('userData', JSON.stringify(data));
+                    state.storeSession = true;
+                }
+
+                state.userData = data;
+
+                renderRecents();
+                renderChatOldMsgs();
+
                 loginModal.hide();
                 chatRoom.dispatchEvent(connectWS);
             })
@@ -55,20 +53,17 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    loginButton.addEventListener("click", performLogin)
-
     function connectWebsocket() {
-        if (chatSocket != null) {
+        if (state.chatSocket != null) {
             console.log("Closing WS Connection...")
-            chatSocket.close(4000, 'Changing Room...')
+            state.chatSocket.close(4000, 'Changing Room...')
         }
-        chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`);
-        chatSocket.onmessage = function (e) {
-            var data = JSON.parse(e.data)
-            console.log('Socket message: ', e)
+        state.chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${state.userData.user.last_used_room.id}/`);
+        state.chatSocket.onmessage = (e) => {
+            let data = JSON.parse(e.data)
 
             if (data.type === 'chat') {
-                var messages = document.getElementById('messages')
+                let messages = document.getElementById('messages')
                 messages.insertAdjacentHTML('afterbegin', `<div class="message">
                         <div class="message-user">${data.user}</div>
                         <div class="message-text">${data.message}</div>
@@ -78,48 +73,25 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    chatRoom.addEventListener('connectWS', connectWebsocket);
-
-
-    function submitMessage(e) {
+    function sendMessageHandler(e) {
         e.preventDefault()
-        var message = e.target.message.value
-        chatSocket.send(JSON.stringify({
-            'message': message,
+        state.chatSocket.send(JSON.stringify({
+            'message': e.target.message.value,
             'type': "chat",
             "subtype": null
         }))
-        chatBox.reset()
+        e.target.reset()
     }
 
-    // Setup the chatbox form
-    var chatBox = document.getElementById('chat-box');
-    chatBox.addEventListener('submit', submitMessage);
-
-    // Muestro el login???
-    let userData = JSON.parse(sessionStorage.getItem('userData'))
-    if (userData) {
-        token = userData.token;
-        userName = userData.user.first_name;
-        userId = userData.user.id;
-        roomId = userData.user.last_used_room.id;
-        roomsImIn = userData.user.rooms_im_in;
-        populateRecents(roomsImIn);
-        populateChat(roomId);
-        chatRoom.dispatchEvent(connectWS);
-    } else {
-        loginModal.show()
-    }
-
-    function populateChat(room) {
+    function renderChatOldMsgs() {
         let messages = document.getElementById('messages');
         messages.innerHTML = "";
 
-        let url = `http://${window.location.host}/rooms/${room}/messages`;
+        let url = `http://${window.location.host}/rooms/${state.userData.user.last_used_room.id}/messages`;
         let req = new Request(url, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                'Authorization': `Token ${state.userData.token}`
             },
             method: "GET"
         });
@@ -140,10 +112,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    function populateRecents(recentRooms) {
+    function renderRecents() {
         let recents = document.getElementById('recents-ul');
+        recents.innerHTML = "";
 
-        recentRooms.forEach(room => {
+        state.userData.user.rooms_im_in.forEach(room => {
             recents.insertAdjacentHTML('afterbegin',
                 `<li class="room">
                     <a href="#" id="r-room-${room.id}">
@@ -151,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <span>${room.room_name}</span>
                         <i class="fa fa-times" style="float: right;"></i>
                     </a>
-                </li>`)
+                </li>`);
         })
 
     }
@@ -159,21 +132,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateUserProfile(e) {
         e.preventDefault()
         let firstName = document.getElementById("profile-first").value;
-        console.log(firstName);
         let lastName = document.getElementById("profile-last").value;
-        console.log(lastName);
         let email = document.getElementById("profile-email").value;
-        console.log(email);
 
-        let url = `http://${window.location.host}/users/profile/${userId}`;
+        let url = `http://${window.location.host}/users/profile/${state.userData.user.id}`;
         let req = new Request(url, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                'Authorization': `Token ${state.userData.token}`
             },
             method: "PUT",
             body: `{
-                "id": ${userId},
+                "id": ${state.userData.user.id},
                 "first_name": "${firstName}",
                 "last_name": "${lastName}",
                 "email": "${email}"
@@ -182,31 +152,30 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(req)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                userName = data.first_name
+                console.log("Returned data is: " + data);
+                console.log("state.userData is: " + state.userData);
+                // TODO: Update state.userData with new info
+                // TODO: Update stored data (if it was stored... :wink:)
             })
             .catch(err => {
                 console.log(err);
             })
     }
 
-    const profileForm = document.getElementById("profile-form");
-    profileForm.addEventListener('submit', updateUserProfile);
-
     function getAvailableRooms() {
+        const roomsSelectWidget = document.getElementById("for-room");
+
         let url = `http://${window.location.host}/rooms`;
         let req = new Request(url, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                'Authorization': `Token ${state.userData.token}`
             },
             method: "GET"
         });
         fetch(req)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                const roomsSelectWidget = document.getElementById("for-room");
                 roomsSelectWidget.innerHTML = "";
                 roomsSelectWidget.insertAdjacentHTML("beforeend", "<option selected>Seleccione una sala...</option>")
 
@@ -220,42 +189,82 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    const roomsGetListBtn = document.getElementById("room-list-btn");
-    roomsGetListBtn.addEventListener("click", getAvailableRooms);
-
     function changeActiveRoom(e) {
-        roomId = e.target.value;
-        populateChat(roomId);
+        state.userData.user.last_used_room.id = e.target.value;
+        // TODO: Update the "rooms im in" data for the user...
+        // TODO: Save the userData info in session storage (if previously saved...)
+        // TODO: Highlight the slected room in the recents...
+        renderChatOldMsgs();
+        renderRecents();
         chatRoom.dispatchEvent(connectWS);
-        updateUserRoom();
-        roomsModal.hide()
+        updateSelectedRoomInDB();
+        roomsModal.hide();
     }
 
-    const roomsSelectWidget = document.getElementById("for-room");
-    roomsSelectWidget.addEventListener("change", changeActiveRoom);
-
-    function updateUserRoom() {
-
-        let url = `http://${window.location.host}/users/${userId}/rooms`;
+    function updateSelectedRoomInDB() {
+        let url = `http://${window.location.host}/users/${state.userData.user.id}/rooms`;
         let req = new Request(url, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
+                'Authorization': `Token ${state.userData.token}`
             },
             method: "PUT",
             body: `{
-                "last_used_room": "${roomId}"
+                "last_used_room": "${state.userData.user.last_used_room.id}"
             }`
         });
         fetch(req)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                userData.user.last_used_room.id = roomId;
-                sessionStorage.setItem('userData', JSON.stringify(userData));
+                console.log("Returned data from updateSelectedRoomInDB: " + data);
             })
             .catch(err => {
                 console.log(err);
             })
     }
+
+    // ================================================================
+    // Assign Events to its corresponding Actions:
+
+    // Bootstrap Modals
+    const loginModal = new bootstrap.Modal('#login-modal');
+    const roomsModal = new bootstrap.Modal('#rooms-list-modal');
+
+    // Setup login handler
+    const loginButton = document.getElementById("login-btn");
+    loginButton.addEventListener("click", performLogin)
+
+    // Setup the event to handle WebSocket connections...
+    const connectWS = new Event('connectWS');
+    const chatRoom = document.getElementById('chatroom');
+    chatRoom.addEventListener('connectWS', connectWebsocket);
+
+    // Setup the chatbox form
+    var chatBox = document.getElementById('chat-box');
+    chatBox.addEventListener('submit', sendMessageHandler);
+
+    // Setup the update profile form
+    const profileForm = document.getElementById("profile-form");
+    profileForm.addEventListener('submit', updateUserProfile);
+
+    // Setup the button to get the list of available rooms
+    const roomsGetListBtn = document.getElementById("room-list-btn");
+    roomsGetListBtn.addEventListener("click", getAvailableRooms);
+
+    // Setup the room selector
+    const roomsSelectWidget = document.getElementById("for-room");
+    roomsSelectWidget.addEventListener("change", changeActiveRoom);
+
+    /////////////////////////////////////////////////////////////////
+    // Existe la info de usuario? o tenemos que mostrar el login??
+    let stored = JSON.parse(sessionStorage.getItem('userData'))
+    if (stored) {
+        state.userData = stored
+        renderRecents();
+        renderChatOldMsgs();
+        chatRoom.dispatchEvent(connectWS);
+    } else {
+        loginModal.show()
+    }
+
 });
