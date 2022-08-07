@@ -116,8 +116,8 @@ h4 {
     font-size: 12px;
 }
 
+.active,
 .recents .room a:hover,
-.recents .room .active,
 .recents .room:hover {
     background-color: #85d44c;
     color: black;

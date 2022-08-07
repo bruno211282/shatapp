@@ -124,6 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     </a>
                 </li>`);
         })
+        let activeRoom = document.getElementById(`r-room-${state.userData.user.last_used_room.id}`).parentElement
+        activeRoom.classList.add('active')
 
     }
 
