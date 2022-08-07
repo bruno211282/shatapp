@@ -114,18 +114,22 @@ document.addEventListener("DOMContentLoaded", function () {
         let recents = document.getElementById('recents-ul');
         recents.innerHTML = "";
 
-        state.userData.user.rooms_im_in.forEach(room => {
-            recents.insertAdjacentHTML('afterbegin',
-                `<li class="room">
-                    <a href="#" id="r-room-${room.id}">
-                        <i class="fa fa-users"></i>
-                        <span>${room.room_name}</span>
-                        <i class="fa fa-times" style="float: right;"></i>
-                    </a>
-                </li>`);
-        })
-        let activeRoom = document.getElementById(`r-room-${state.userData.user.last_used_room.id}`).parentElement
-        activeRoom.classList.add('active')
+        if (state.userData.user.rooms_im_in) {
+            state.userData.user.rooms_im_in.forEach(room => {
+                recents.insertAdjacentHTML('afterbegin',
+                    `<li class="room">
+                        <a href="#" id="r-room-${room.id}">
+                            <i class="fa fa-users"></i>
+                            <span>${room.room_name}</span>
+                            <i class="fa fa-times" style="float: right;"></i>
+                        </a>
+                    </li>`);
+            })
+
+
+            let activeRoom = document.getElementById(`r-room-${state.userData.user.last_used_room.id}`).parentElement
+            activeRoom.classList.add('active')
+        }
 
     }
 
