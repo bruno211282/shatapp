@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let state = {
         chatSocket: null,
         userData: null,
-        storeSession: null
+        storeSession: null,
+        availableRooms: null
     };
 
     // ===================================================
@@ -13,7 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let loginurl = `http://${window.location.host}/auth/login`
         let userNameValue = document.getElementById("loginusername").value
         let passwordValue = document.getElementById("loginpassword").value
-        let keepSessionStored = document.getElementById("loginkeepsession").value
+        let keepSessionStored = document.getElementById("loginkeepsession").checked
+
+        state.storeSession = keepSessionStored
 
         let req = new Request(loginurl, {
             headers: {
@@ -31,9 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
 
-                if (keepSessionStored === 'on') {
+
+                if (state.keepSessionStored) {
                     sessionStorage.setItem('userData', JSON.stringify(data));
-                    state.storeSession = true;
                 }
 
                 state.userData = data;
@@ -159,6 +162,27 @@ document.addEventListener("DOMContentLoaded", function () {
             })
     }
 
+    function getUserInfo() {
+        let url = `http://${window.location.host}/users/${state.userData.user.id}`;
+        fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${state.userData.token}`
+            },
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Returned data is: " + data);
+                console.log("state.userData is: " + state.userData);
+                // TODO: #14 Update state.userData with new info
+                // TODO: #14 Update stored data (if it was stored... :wink:)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     function getAvailableRooms() {
         const roomsSelectWidget = document.getElementById("for-room");
 
@@ -173,6 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(req)
             .then(response => response.json())
             .then(data => {
+                state.availableRooms = data;
                 roomsSelectWidget.innerHTML = "";
                 roomsSelectWidget.insertAdjacentHTML("beforeend", "<option selected>Seleccione una sala...</option>")
 
@@ -187,9 +212,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function changeActiveRoom(e) {
+        var selectedRoom = state.availableRooms.filter(room => room.id == e.target.value)[0];
+        var selectedRoomWasNotInRecents = !state.userData.user.rooms_im_in.filter(room => room.id == e.target.value).length;
+
+        if (selectedRoomWasNotInRecents) {
+            state.userData.user.rooms_im_in.push(selectedRoom)
+        }
+
         state.userData.user.last_used_room.id = e.target.value;
-        // TODO: #15 Update the "rooms_im_in" data for the user
-        // TODO: #15 Save the userData info in session storage (if previously saved...)
+
+        if (state.storeSession) {
+            sessionStorage.setItem('userData', JSON.stringify(state.userData));
+        }
+
         // TODO: #6 Highlight the slected room in the recents...
         renderChatOldMsgs();
         renderRecents();
