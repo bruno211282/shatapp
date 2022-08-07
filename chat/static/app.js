@@ -33,9 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json()
             })
             .then(data => {
-
-
-                if (state.keepSessionStored) {
+                if (state.storeSession) {
                     sessionStorage.setItem('userData', JSON.stringify(data));
                 }
 
